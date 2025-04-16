@@ -34,7 +34,7 @@ const navbar = () => {
               Admin
             </a>
             <a className="text-white hover:text-blue-500 tracking-widest">
-              LogOut
+              Logout
             </a>
           </div>
         </div>
