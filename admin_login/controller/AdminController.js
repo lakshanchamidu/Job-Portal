@@ -29,4 +29,40 @@ const createAdmin = async (req, res) => {
   }
 };
 
-module.exports = { createAdmin };
+const getAllAdmins = async (req, res) => {
+  try {
+    const Admins = await Admin.find().select("-password");
+    res.status(200).json(Admins);
+  } catch (error) {
+    res.status(400).json({ message: "Server error" });
+  }
+};
+
+const loginAdmin = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    if (!email || !password)
+      return res.status(401).json({ message: "All fields are required." });
+
+    const admin = await Admin.findOne({ email });
+
+    if (!admin) return res.status(400).json({ message: "Admin not found!" });
+
+    const isMatchPassword = await bcrypt.compare(password, admin.password);
+
+    if (!isMatchPassword)
+      return res.status(401).json({ message: "Password is incorrect." });
+
+    res.status(200).json({
+      message: "Successfully Login Admin.",
+      admin: {
+        admin_Name: admin.adminname,
+        company: admin.company,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error." });
+  }
+};
+
+module.exports = { createAdmin, getAllAdmins, loginAdmin };
