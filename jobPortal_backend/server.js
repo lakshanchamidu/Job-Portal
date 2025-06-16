@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const adminLoginRoutes = require("./routers/AdminRoutes");
 const JobAddRouters = require("./routers/AdminJobRoutes");
+const UserLoginRouter = require("./routers/UserRouter");
 
 const app = express();
 app.use(cors());
@@ -29,6 +30,7 @@ mongoose
 
 app.use("/admin/jobPortal", adminLoginRoutes);
 app.use("/admin/jobPortal", JobAddRouters);
+app.use("/user/jobPortal", UserLoginRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`);
