@@ -1,7 +1,7 @@
 const Admin = require("../model/Admin");
 const bcrypt = require("bcrypt");
 
-const createAdmin = async (req, res) => {
+exports.createAdmin = async (req, res) => {
   const { adminname, email, company, password } = req.body;
   try {
     if (!adminname || !email || !company || !password)
@@ -29,7 +29,7 @@ const createAdmin = async (req, res) => {
   }
 };
 
-const getAllAdmins = async (req, res) => {
+exports.getAllAdmins = async (req, res) => {
   try {
     const Admins = await Admin.find().select("-password");
     res.status(200).json(Admins);
@@ -38,7 +38,7 @@ const getAllAdmins = async (req, res) => {
   }
 };
 
-const loginAdmin = async (req, res) => {
+exports.loginAdmin = async (req, res) => {
   const { email, password } = req.body;
   try {
     if (!email || !password)
@@ -64,5 +64,3 @@ const loginAdmin = async (req, res) => {
     res.status(500).json({ message: "Server error." });
   }
 };
-
-module.exports = { createAdmin, getAllAdmins, loginAdmin };

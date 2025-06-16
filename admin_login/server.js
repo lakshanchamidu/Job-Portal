@@ -2,12 +2,7 @@ require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
-const {
-  createAdmin,
-  getAllAdmins,
-  loginAdmin,
-} = require("./controller/AdminController");
-const { addJob } = require("./controller/JobController");
+const adminLoginRoutes = require("./routers/AdminRoutes");
 
 const app = express();
 app.use(cors());
@@ -31,11 +26,8 @@ mongoose
     process.exit(1);
   });
 
-app.post("/api/admin", createAdmin);
-app.get("/api/admin/all", getAllAdmins);
-app.post("/api/admin/login", loginAdmin);
-app.post("/api/job", addJob);
+app.use("/admin/jobPortal", adminLoginRoutes);
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port: ${PORT}`);
+  console.log(`Server running on port: ${PORT}`);
 });
