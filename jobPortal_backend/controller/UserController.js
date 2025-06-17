@@ -30,3 +30,28 @@ exports.createUser = async (req, res) => {
     res.status(400).json({ message: "Error creating user." });
   }
 };
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const Users = await User.find().select("-password");
+    res.status(200).json(Users);
+  } catch (error) {
+    res.status(400).json({ message: "Error fetching users." });
+  }
+};
+
+exports.getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const Users = await User.findById(id).select("-password");
+    res.status(200).json({
+      user: {
+        User_Name: Users.name,
+        Email: Users.email,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({ message: "Error fetching user details." });
+  }
+};
