@@ -1,30 +1,36 @@
 import React, { useState } from "react";
-import axios from "axios";
-import logo from "../assests/JobPortal.png";
 import { useNavigate } from "react-router-dom";
+import logo from "../assests/JobPortal.png";
+import axios from "axios";
 
-function LogIn() {
+function SignUp() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/user/jobPortal/userLogin",
+        "http://localhost:5000/user/jobPortal",
         {
+          name,
           email,
           password,
         }
       );
-      if (response.status === 200) {
+
+      if (response.status === 201) {
         setEmail("");
+        setName("");
         setPassword("");
-        alert("Login Successful!.");
+        alert("Signup successful!");
+        navigate("/");
       }
     } catch (error) {
-      console.error("Login error.", error);
-      alert("Check your Credintials.");
+      console.error(error);
+      alert("Signup error", error);
     }
   };
 
@@ -39,7 +45,7 @@ function LogIn() {
       <div className="w-1/2 flex flex-col items-center justify-center px-8 mt-10">
         <div className="text-center text-white mb-6">
           <h1 className="text-6xl font-bold mb-2">Welcome</h1>
-          <p className="text-2xl mb-6">Connecting Talent with Opportunity</p>
+          <p className="text-2xl">Connecting Talent with Opportunity</p>
         </div>
 
         <div className="overflow-hidden max-w-[700px] w-full">
@@ -90,11 +96,20 @@ function LogIn() {
           className="bg-white bg-opacity-20 backdrop-blur-md p-10 rounded-xl shadow-lg w-full max-w-md"
         >
           <h2 className="text-4xl font-bold mb-2 text-white text-center">
-            Log In
+            Sign Up
           </h2>
           <p className="text-1xl text-center text-white font-bold mb-6">
-            Sign in to access your account
+            Create your own account
           </p>
+
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            placeholder="Enter your name"
+            className="w-full p-3 mb-4 rounded-2xl text-black"
+          />
 
           <input
             type="email"
@@ -118,15 +133,12 @@ function LogIn() {
             type="submit"
             className="w-full bg-indigo-600 hover:bg-indigo-700 transition-colors text-white font-semibold py-3 rounded-2xl"
           >
-            Log In
+            Sign Up
           </button>
           <p className="text-center text-white mt-4">
-            Don't have an account?{" "}
-            <a
-              href="/jobPortal/SignUp"
-              className="text-yellow-300 hover:underline"
-            >
-              Register Now
+            Already you have a account?{" "}
+            <a href="/" className="text-yellow-300 hover:underline">
+              LogIn Now
             </a>
           </p>
         </form>
@@ -138,4 +150,4 @@ function LogIn() {
   );
 }
 
-export default LogIn;
+export default SignUp;
